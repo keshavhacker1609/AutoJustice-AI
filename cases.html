@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>AutoJustice Cases</title>
+
+<style>
+
+body{
+background:#0b1220;
+color:#e6edf3;
+font-family:Segoe UI;
+padding:40px;
+}
+
+/* Header */
+h1{
+margin-bottom:25px;
+}
+
+/* Table */
+table{
+width:100%;
+border-collapse:collapse;
+background:#111827;
+border-radius:10px;
+overflow:hidden;
+}
+
+th{
+background:#1f2937;
+padding:16px;
+text-align:left;
+font-weight:600;
+}
+
+td{
+padding:14px;
+border-bottom:1px solid #1f2937;
+}
+
+/* Hover */
+tr:hover{
+background:#0f172a;
+}
+
+/* Severity Badges */
+.badge{
+padding:6px 10px;
+border-radius:6px;
+font-weight:600;
+}
+
+.high{
+background:#7f1d1d;
+color:#fecaca;
+}
+
+.medium{
+background:#78350f;
+color:#fde68a;
+}
+
+.low{
+background:#064e3b;
+color:#6ee7b7;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>⚖ AutoJustice Case Dashboard</h1>
+
+<table id="casesTable">
+
+<tr>
+<th>ID</th>
+<th>Attack</th>
+<th>Severity</th>
+<th>Risk</th>
+<th>Status</th>
+<th>Time</th>
+</tr>
+
+</table>
+
+<script>
+
+async function loadCases(){
+
+let res = await fetch("/cases");
+let data = await res.json();
+
+let table = document.getElementById("casesTable");
+
+data.cases.forEach(c => {
+
+let severityClass = "";
+
+if(c.severity === "High"){
+severityClass = "high";
+}
+else if(c.severity === "Medium"){
+severityClass = "medium";
+}
+else{
+severityClass = "low";
+}
+
+table.innerHTML += `
+<tr>
+<td>${c.id}</td>
+<td>${c.attack}</td>
+<td><span class="badge ${severityClass}">${c.severity}</span></td>
+<td>${c.risk}</td>
+<td>${c.status}</td>
+<td>${c.time}</td>
+</tr>
+`;
+
+});
+
+}
+
+loadCases();
+
+</script>
+
+</body>
+</html>
